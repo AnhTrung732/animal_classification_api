@@ -1,0 +1,1 @@
+sudo docker run -it --rm -p 80:80 cat-dog-api bash   

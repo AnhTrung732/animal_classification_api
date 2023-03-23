@@ -1,0 +1,9 @@
+version: '3'
+services:
+  app:
+    build: .
+    container_name: cat-dog-container
+    command: uvicorn app.main:app --port 80
+    ports:
+      - 80:80
+

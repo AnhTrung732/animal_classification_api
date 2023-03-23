@@ -1,0 +1,83 @@
+<script type="text/javascript">
+    function previewFile() {
+        const preview = document.querySelector('img');
+        var file = document.getElementById('fileInput').files[0];
+        const reader = new FileReader();
+        reader.addEventListener("load", function() {
+            preview.src = reader.result; // show image in <img> tag
+        }, false);
+        if (file) {
+            reader.readAsDataURL(file);
+        }
+    }
+
+    function uploadFile(file) {
+        var file = document.getElementById('fileInput').files[0];
+        if (file) {
+            var formData = new FormData();
+            formData.append('file', file);
+            fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("serverMsg").innerHTML = data.message;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    }
+
+    function detectUploadImage(file) {
+        var file = document.getElementById('fileInput').files[0];
+        if (file) {
+            var formData = new FormData();
+            formData.append('file', file);
+            fetch('/api/detectUpload', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("serverMsg").innerHTML = data.species;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    }
+
+    function detectURLImage(url) {
+        var url = document.getElementById('url').value;
+        console.log(url);
+        if (url) {
+            var formData = new FormData();
+            formData.append('url', url);
+            fetch('/api/detectURL', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("serverMsg").innerHTML = data.species;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+
+    }
+
+    
+    
+
+</script>
+<input type="file" id="fileInput" onchange="previewFile()"><br>
+<input type="button" value="Upload Image" onclick="uploadFile()"><br>
+<input type="button" value="Detect Upload Image" onclick="detectUploadImage()"><br>
+<input type="url" id="url">
+<input type="button" value="Detect URL Image" onclick="detectURLImage()"><br>
+<p id="serverMsg"></p>
+<img height="200">
