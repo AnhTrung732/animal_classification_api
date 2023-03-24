@@ -1,4 +1,4 @@
-# Face Recognition API
+# Dog Cat Classification API
 
 ## Tools
 
